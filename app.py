@@ -51,3 +51,5 @@ def status():
         balances=blockchain.balances
     )
 
+if __name__ == "__main__":
+    app.run(debug=True)

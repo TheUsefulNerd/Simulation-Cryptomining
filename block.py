@@ -13,56 +13,51 @@ class Block:
 
     def to_dict(self):
         return {
-        'index': self.index,
-        'transaction': self.transaction,
-        'timestamp': str(self.timestamp),
-        'previous_hash': self.previous_hash,
-        'nonce': self.nonce  
-    }
-    
+            'index': self.index,
+            'timestamp': str(self.timestamp),
+            'transaction': self.transaction,
+            'previous_hash': self.previous_hash,
+            'nonce': self.nonce,
+            'merkle_root': self.merkle_root
+        }
+
     def compute_hash(self):
-        block_string = json.dumps(self.to_dict(), sort_keys=True, default=str).encode()
+        block_string = json.dumps(self.to_dict(), sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
-    
+
     def mine_block(self, difficulty):
-        print("Started mining block...")
+        print("⛏️ Started mining block...")
         prefix = '0' * difficulty
         max_nonce = 1_000_000
+
         while self.nonce < max_nonce:
             computed_hash = self.compute_hash()
             if computed_hash.startswith(prefix):
                 self.hash = computed_hash
-                print(f"Block mined! Nonce: {self.nonce} | Hash: {self.hash}")
+                print(f"✅ Block mined! Nonce: {self.nonce} | Hash: {self.hash}")
                 break
-            else:
-                self.nonce += 1
-                if self.nonce % 10000 == 0:
-                    print(f"🔄 Trying nonce: {self.nonce} | Hash: {computed_hash}")
+            self.nonce += 1
+
+            if self.nonce % 10000 == 0:
+                print(f"🔄 Trying nonce: {self.nonce} | Hash: {computed_hash}")
         else:
-            
-            print(f"Failed to mine block after {max_nonce} attempts")
-        print("Finished mining block!")
+            print(f"❌ Failed to mine block after {max_nonce} attempts")
 
-
-
+        print("✅ Finished mining block!")
 
     def compute_merkle_root(self):
         tx_hashes = [hashlib.sha256(str(tx).encode()).hexdigest() for tx in self.transaction]
 
         if not tx_hashes:
-           return None
-        
+            return None
+
         while len(tx_hashes) > 1:
             if len(tx_hashes) % 2 != 0:
                 tx_hashes.append(tx_hashes[-1])
 
             tx_hashes = [
-            hashlib.sha256((tx_hashes[i] + tx_hashes[i + 1]).encode()).hexdigest()
-            for i in range(0, len(tx_hashes), 2)
-        ]
+                hashlib.sha256((tx_hashes[i] + tx_hashes[i + 1]).encode()).hexdigest()
+                for i in range(0, len(tx_hashes), 2)
+            ]
 
         return tx_hashes[0]
-    
-
-
-
