@@ -2,6 +2,10 @@
 
 A fully functional blockchain simulation implemented in Python with Flask. This project simulates core blockchain mechanics such as mining, transaction validation, mempool prioritization, mining rewards, balance tracking, and a dynamic web interface for visualization.
 
+---
+
+Project Link: https://simulation-cryptomining.onrender.com/
+
 ## 🧠 Project Highlights
 
 * ⛏️ **Proof-of-Work Mining** with adjustable difficulty  
