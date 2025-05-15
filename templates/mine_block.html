@@ -1,0 +1,10 @@
+<h2>Mine a Block</h2>
+<form method="post">
+    <label>Miner Name:</label>
+    <input type="text" name="miner" value="Alice" required><br><br>
+
+    <label>Transactions to include (max {{ mempool_len }}):</label>
+    <input type="number" name="tx_limit" min="1" value="5" required><br><br>
+
+    <button type="submit">Mine Block</button>
+</form>

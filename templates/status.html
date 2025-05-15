@@ -1,0 +1,38 @@
+<h2>Current Blockchain Status</h2>
+
+<h3>Chain ({{ chain|length }} blocks)</h3>
+{% for block in chain %}
+<div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+    <strong>Block {{ block.index }}</strong><br>
+    Hash: {{ block.hash }}<br>
+    Prev: {{ block.previous_hash }}<br>
+    Nonce: {{ block.nonce }}<br>
+    Transactions:
+    <ul>
+        {% for tx in block.transaction %}
+        <li>{{ tx.sender }} → {{ tx.receiver }} : {{ "%.4f"|format(tx.amount) }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+
+<h3>Current Mempool</h3>
+{% if mempool %}
+<ul>
+    {% for tx in mempool %}
+    <li>{{ tx['sender'] }} → {{ tx['receiver'] }} : {{ "%.4f"|format(tx['amount']) }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p><em>No pending transactions.</em></p>
+{% endif %}
+
+<h3>Balances</h3>
+<ul>
+    {% for user, balance in balances.items() %}
+    <li><strong>{{ user }}:</strong> {{ "%.4f"|format(balance) }}</li>
+    {% endfor %}
+</ul>
+
+<br>
+<a href="/">← Back to Menu</a>
